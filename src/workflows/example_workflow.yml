@@ -1,6 +1,8 @@
-name: "example_workflow"
+
+name: "test_report_dependency"
 steps:
-  - taskType: "analysis"
+  - taskType: "polygonArea"
     stepNumber: 1
-  - taskType: "notification"
+  - taskType: "report"
     stepNumber: 2
+    dependsOn: 1

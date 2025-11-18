@@ -15,6 +15,7 @@ export enum WorkflowStatus {
 interface WorkflowStep {
     taskType: string;
     stepNumber: number;
+    dependsOn?: number;
 }
 
 interface WorkflowDefinition {
@@ -25,13 +26,6 @@ interface WorkflowDefinition {
 export class WorkflowFactory {
     constructor(private dataSource: DataSource) {}
 
-    /**
-     * Creates a workflow by reading a YAML file and constructing the Workflow and Task entities.
-     * @param filePath - Path to the YAML file.
-     * @param clientId - Client identifier for the workflow.
-     * @param geoJson - The geoJson data string for tasks (customize as needed).
-     * @returns A promise that resolves to the created Workflow.
-     */
     async createWorkflowFromYAML(filePath: string, clientId: string, geoJson: string): Promise<Workflow> {
         const fileContent = fs.readFileSync(filePath, 'utf8');
         const workflowDef = yaml.load(fileContent) as WorkflowDefinition;
@@ -51,6 +45,7 @@ export class WorkflowFactory {
             task.status = TaskStatus.Queued;
             task.taskType = step.taskType;
             task.stepNumber = step.stepNumber;
+            task.dependencyStepNumber = step.dependsOn;
             task.workflow = savedWorkflow;
             return task;
         });
