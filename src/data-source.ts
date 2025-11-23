@@ -6,7 +6,6 @@ import {Workflow} from "./models/Workflow";
 export const AppDataSource = new DataSource({
     type: 'better-sqlite3',
     database: 'data/database.sqlite',
-    dropSchema: true,
     entities: [Task, Result, Workflow],
     synchronize: true,
     logging: false,
